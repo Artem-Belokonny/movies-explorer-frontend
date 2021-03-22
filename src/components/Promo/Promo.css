@@ -1,0 +1,127 @@
+.promo {
+    background-color: #073042;
+    min-height: calc(100vh - 66px);
+    padding: 0 70px;
+}
+
+.promo__header-container {
+    display: flex;
+    padding: 18px 0;
+    justify-content: space-between;
+}
+
+
+.promo__logo-link {
+    opacity: 1;
+    transition: opacity 2s;
+}
+
+.promo__logo-link:hover {
+    opacity: .6;
+    cursor: pointer;
+}
+
+.promo__auth-container {
+    display: flex;
+    align-items: center;
+}
+
+.promo__link{
+    color: #fff;
+    font-style: normal; 
+    font-weight: 500; 
+    font-size: 12px; 
+    line-height: 16px;
+    opacity: 1;
+    transition: opacity 2s;
+    text-decoration: none;
+}
+
+.promo__link:hover {
+    opacity: .6;
+    cursor: pointer;
+}
+
+.promo__link_login {
+    margin-left: 30px;
+    padding: 8px 20px;
+    background-color: #3ddc84;
+    border: 1px solid #202020;
+    color: #000;
+	border: 1px solid #073042;
+	border-radius: 3px;
+}
+
+.promo__container {
+    max-width: 730px;
+    margin: 184px auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.promo__landing-logo {
+    max-width: 320px;
+}
+
+.promo__title {
+    color: #fff;
+    text-align: center;
+    font-style: normal; 
+    font-weight: 400; 
+    font-size: 50px; 
+    line-height: 58px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+@media only screen and (max-width: 1279px) {
+    .promo {
+        padding: 0 30px;
+    }
+
+    .promo__container {
+        max-width: 730px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .promo {
+        padding: 0 14px;
+    }
+
+    .promo__container {
+        margin: 142px auto 0;
+    }
+
+    .promo__title {
+        font-size: 31px; 
+        line-height: 39px;
+    }
+
+    .promo__link{
+        font-size: 10px; 
+    }
+
+    .promo__landing-logo {
+        max-width: 248px;
+    }
+
+    .promo__link_login {
+        margin-left: 14px;
+        padding: 5px 12px;
+    }
+}
+
+@media only screen and (max-width: 424px) {
+    .promo__container {
+        max-width: 300px;
+    }
+}
