@@ -1,0 +1,22 @@
+.moviesCardList {
+    justify-content: center;
+    background-color: #202020;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    column-gap: 30px;
+    row-gap: 90px;
+}
+
+@media only screen and (max-width: 1279px) {
+    .moviesCardList {
+        grid-template-columns: repeat(auto-fill, minmax(339px, 1fr));
+        row-gap: 47px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .moviesCardList {
+        grid-template-columns: repeat(auto-fill, 300px);
+        row-gap: 39px;
+    }
+}

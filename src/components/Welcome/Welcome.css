@@ -1,0 +1,143 @@
+.welcome {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    background-color: #202020;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.welcome__logo-link {
+    margin-right: auto;
+    opacity: 1;
+    transition: opacity 2s;
+}
+
+.welcome__logo-link:hover {
+    opacity: .6;
+    cursor: pointer;
+}
+
+.welcome__form {
+    width: 100%;
+}
+
+.welcome__title {
+    font-style: normal; 
+    font-weight: 500; 
+    font-size: 24px; 
+    line-height: 29px; 
+    text-align: left;
+    margin: 40px 0;
+    padding: 0;
+}
+
+.welcome__subtitle-link {
+    text-decoration: none;
+    color: #4285F4;
+    opacity: 1;
+    transition: opacity 2s;
+    font-style: normal; 
+    font-weight: 400; 
+    font-size: 14px; 
+    line-height: 17px; 
+    margin: 0;
+    padding: 0;
+}
+
+.welcome__subtitle-link:hover {
+    opacity: .6;
+    cursor: pointer;
+}
+
+.welcome__subtitle {
+    color: #8B8B8B;
+    font-style: normal; 
+    font-weight: 400; 
+    font-size: 14px; 
+    line-height: 17px; 
+    margin: 0;
+    padding: 0;
+}
+
+.welcome__input {
+    width: calc(100% - 15px);
+    margin: 10px 0 20px 0;
+    padding: 15px 0;
+    padding-left: 15px;
+    font-style: normal; 
+    font-weight: 400; 
+    font-size: 13px; 
+    line-height: 16px; 
+    border: none; 
+    position: relative;
+    background-color: #2F2F2F;
+    color: white;
+    border-radius: 8px;
+    outline: none;
+}
+
+.welcome__input:focus {
+    box-shadow: 5px 5px 5px #A0A0A0;
+}
+
+.welcome__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 396px;
+    margin: 0;
+}
+
+.welcome__button {
+    width: 100%;
+    min-height: 45px;
+    font-style: normal; 
+    font-weight: 500; 
+    font-size: 14px; 
+    line-height: 17px; 
+    text-align: center; 
+    color: #fff; 
+    background-color: #4285F4; 
+    border: none; 
+    border-radius: 3px; 
+    opacity: 1; 
+    transition: opacity 2s;
+    margin: 160px 0 16px 0;
+    padding: 0;
+}
+
+.welcome__button:hover { 
+    opacity: .6; 
+    cursor: pointer; 
+}
+
+@media only screen and (max-width: 767px) {
+    .welcome__container {
+        min-width: 260px;;
+    }
+
+    .welcome__button {
+        font-size: 12px; 
+        line-height: 14px; 
+    }
+
+    .welcome__subtitle {
+        font-size: 12px; 
+        line-height: 14px; 
+    }
+
+    .welcome__subtitle-link {
+        font-size: 12px; 
+        line-height: 14px; 
+    }
+
+    .welcome__logo-link {
+        margin: 0 auto;
+    }
+
+    .welcome__title {
+        text-align: center;
+    }
+}

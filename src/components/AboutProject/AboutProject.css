@@ -1,0 +1,139 @@
+.aboutProject {
+    background-color: #202020;
+    padding: 0 70px;
+}
+
+.aboutProject__title {
+    margin: 0;
+    color: #fff;
+    font-style: normal; 
+    font-weight: 400; 
+    font-size: 22px; 
+    line-height: 27px;
+    padding: 110px 0 23px 0;
+    border-bottom: 1px solid #DADADA;
+}
+
+.aboutProject__container {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 40px;
+    padding: 70px 0 110px;
+}
+
+.aboutProject__text {
+    color: #fff;
+    margin: 0;
+    font-style: normal; 
+    font-weight: 400; 
+    font-size: 14px; 
+    line-height: 20px;
+}
+
+.aboutProject__subtitle {
+    color: #fff;
+    margin: 0 0 26px 0;
+    font-style: normal; 
+    font-weight: 400; 
+    font-size: 20px; 
+    line-height: 24px;
+}
+
+.aboutProject__week-container {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 36px auto;
+    row-gap: 14px;
+    text-align: center;
+    padding-bottom: 110px;
+}
+
+.aboutProject__subtext {
+    margin: 0;
+    color: #8B8B8B;
+    font-style: normal; 
+    font-weight: 400; 
+    font-size: 14px; 
+    line-height: 17px;
+}
+
+.aboutProject__subtext_green {
+    background-color: #3DDC84;
+    color: #000;
+    line-height: 36px;
+}
+
+.aboutProject__subtext_grey {
+    background-color: #303030;
+    color: #fff;
+    line-height: 36px;
+}
+
+@media only screen and (max-width: 1279px) {
+    .aboutProject {
+        padding: 0 50px;
+    }
+
+    .aboutProject__title {
+        padding: 90px 0 23px 0;
+        font-size: 18px; 
+        line-height: 22px;
+    }
+
+    .aboutProject__week-container {
+        padding-bottom: 90px;
+    }
+
+    .aboutProject__container {
+        column-gap: 30px;
+        padding: 70px 0 93px;
+    }
+
+    .aboutProject__text {
+        line-height: 18px;
+    }
+
+    .aboutProject__subtitle {
+        margin: 0 0 22px 0;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .aboutProject {
+        padding: 0 18px;
+    }
+
+    .aboutProject__title {
+        padding: 70px 0 28px 0;
+    }
+
+    .aboutProject__week-container {
+        padding-bottom: 70px;
+    }
+
+    .aboutProject__container {
+        padding: 60px 0 4px;
+    }
+
+    .aboutProject__text {
+        font-size: 11px; 
+        line-height: 16px;
+        margin: 0 0 56px 0;
+    }
+
+    .aboutProject__subtitle {
+        font-size: 18px; 
+        line-height: 22px;
+        margin: 0 0 16px 0;
+    }
+
+    .aboutProject__subtext {
+        font-size: 11px; 
+    }
+}
+
+@media only screen and (max-width: 424px) {
+    .aboutProject__container {
+        grid-template-columns: 284px;
+    }
+}

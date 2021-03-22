@@ -1,0 +1,158 @@
+.savedMovies {
+    display: flex;
+    background-color: #202020;
+    padding: 0 70px 177px;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.savedMovies__search {
+    width: 100%;
+    border-bottom: 1px solid #424242;
+    margin: 80px 0;
+}
+
+.savedMovies__form {
+    display: flex;
+    justify-content: space-between;
+}
+
+.savedMovies__input {
+    font-style: normal; 
+    font-weight: 400; 
+    font-size: 13px; 
+    line-height: 16px;
+    border-radius: 3px;
+    border: none;
+    background-color: #2F2F2F;
+    outline: none;
+    color: #fff;
+    padding-left: 22px;
+    width:100%;
+}
+
+.savedMovies__button {
+    margin: 0 0 0 10px;
+    color: #fff;
+    font-style: normal; 
+	font-weight: 500; 
+	font-size: 12px; 
+	line-height: 18px;
+    background-color: #4285F4;
+    padding: 13px 17px;
+    border: none;
+    border-radius: 3px;
+    opacity: 1; 
+    transition: opacity 2s;
+}
+
+.savedMovies__button:hover { 
+    opacity: .6; 
+    cursor: pointer; 
+}
+
+.savedMovies__checkbox-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0 40px;
+}
+
+.savedMovies__checkbox-switch {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+}
+
+.savedMovies__checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.savedMovies__checkbox-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: .4s;
+    border-radius: 20px;
+    background-color: #2f2f2f;
+}
+
+.savedMovies__checkbox-slider:before {
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    top: 6px;
+    left: 6px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.savedMovies__checkbox:checked + .savedMovies__checkbox-slider {
+    background-color: #3DDC84;
+}
+
+.savedMovies__checkbox:checked + .savedMovies__checkbox-slider:before {
+    -webkit-transform: translateX(16px);
+    -moz-transform: translateX(16px);
+    -ms-transform: translateX(16px);
+    -o-transform: translateX(16px);
+    transform: translateX(16px);
+}
+
+.savedMovies__text {
+    color: #fff;
+    margin: 0 0 0 12px;
+    font-style: normal; 
+	font-weight: 400; 
+	font-size: 12px; 
+	line-height: 18px;
+}
+
+.savedMovies__moreButton {
+    min-width: 320px;
+    min-height: 36px;
+    color: #fff;
+    font-style: normal; 
+	font-weight: 500; 
+	font-size: 12px; 
+	line-height: 14px;
+    background-color: #2F2F2F;
+    border: none;
+    border-radius: 6px;
+    margin: 78px auto 80px;
+    opacity: 1; 
+    transition: opacity 2s;
+    padding: 0;
+}
+
+.savedMovies__moreButton:hover {
+    opacity: .6; 
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 1279px) {
+    .savedMovies {
+        padding: 0 30px 177px;
+    }
+
+    .savedMovies__input {
+        font-size: 14px; 
+        line-height: 18px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .savedMovies {
+        padding: 0 14px 140px;
+    }
+
+    .savedMovies__input {
+        font-size: 12px; 
+    }
+}
