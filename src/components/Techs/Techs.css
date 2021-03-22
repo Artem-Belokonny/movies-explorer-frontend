@@ -113,6 +113,10 @@
 .techs__container {
     padding: 50px 0 70px;
 }
+
+.techs__text_icon {
+    line-height: 57px;
+}
 }
 
 @media only screen and (max-width: 424px) {

@@ -45,7 +45,7 @@ function MoviesCardList() {
           childrenButtonSave={
             <button
               type="button"
-              className="moviesCard__button moviesCard__button_save"
+              className="moviesCard__button moviesCard__button_delete"
             />
           }
         />
@@ -53,7 +53,7 @@ function MoviesCardList() {
           childrenButtonSave={
             <button
               type="button"
-              className="moviesCard__button moviesCard__button_save"
+              className="moviesCard__button moviesCard__button_delete"
             />
           }
         />
