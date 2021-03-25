@@ -1,9 +1,16 @@
 import "../SearchForm/SearchForm.css";
+
 import { withRouter } from "react-router-dom";
 
-function SearchForm() {
+function SearchForm({ onSearchMovies }) {
+
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    onSearchMovies();
+  }
+
   return (
-    <form className="search__form">
+    <form className="search__form" onSubmit={handleSubmit}>
       <input
         className="search__input"
         type="text"

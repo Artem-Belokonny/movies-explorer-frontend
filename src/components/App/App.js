@@ -13,8 +13,23 @@ import {
   Switch,
   withRouter,
 } from "react-router-dom";
+import * as moviesApi from "../../utils/MoviesApi.js";
 
 function App() {
+  const [cards, setCards] = React.useState([]);
+
+  function handleMovieSearch() {
+    moviesApi
+    .getInitialMovies()
+    .then((res) => {
+      setCards(res);
+      localStorage.setItem(res, JSON.stringify(res));
+    })
+    .catch((err) => {
+      alert(err);
+    });
+  }
+
   return (
     <div className="page">
       <Switch>
@@ -31,7 +46,8 @@ function App() {
           <Profile />
         </Route>
         <Route path="/movies">
-          <Movies />
+          <Movies cards={cards} onSearchMovies={handleMovieSearch}
+          />
         </Route>
         <Route path="/saved-movies">
           <SavedMovies />

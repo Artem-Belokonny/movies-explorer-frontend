@@ -7,16 +7,19 @@ import Footer from "../Footer/Footer.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import { withRouter } from "react-router-dom";
 
-function Movies() {
+function Movies({ cards, onSearchMovies }) {
+    // Обработчик сабмита формы
+
+
   return (
     <>
       <Header />
       <section className="movies">
         <div className="movies__search">
-          <SearchForm />
+          <SearchForm onSearchMovies={onSearchMovies}/>
           <FilterCheckbox />
         </div>
-        <MoviesCardList />
+        <MoviesCardList cards={cards}/>
         <button className="movies__moreButton">Ещё</button>
       </section>
       <Footer />
