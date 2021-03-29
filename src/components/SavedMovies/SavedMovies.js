@@ -1,3 +1,4 @@
+import React from "react";
 import "../SavedMovies/SavedMovies.css";
 import Header from "../Header/Header.js";
 import Footer from "../Footer/Footer.js";
@@ -6,7 +7,8 @@ import FilterCheckbox from "../FilterCheckbox/FilterCheckbox.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import { withRouter } from "react-router-dom";
 
-function SavedMovies() {
+function SavedMovies({ cards, isSavedMovies }) {
+  
   return (
     <>
       <Header />
@@ -15,7 +17,7 @@ function SavedMovies() {
           <SearchForm />
           <FilterCheckbox />
         </div>
-        <MoviesCardList />
+        <MoviesCardList isSavedMovies={isSavedMovies} cards={cards}/>
       </section>
       <Footer />
     </>

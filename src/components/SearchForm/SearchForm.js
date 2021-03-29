@@ -1,12 +1,22 @@
+import React from "react";
 import "../SearchForm/SearchForm.css";
 
 import { withRouter } from "react-router-dom";
 
-function SearchForm({ onSearchMovies }) {
+function SearchForm({ movieSearch, turnOffPreloader, showEmptySearchMsg }) {
+  const [movieName, setMovieName] = React.useState([]);
 
+
+  function handleMovieNameChange(evt) {
+    setMovieName(evt.target.value);
+  }
+
+  // Обработчик сабмита формы
   function handleSubmit(evt) {
     evt.preventDefault();
-    onSearchMovies();
+    movieSearch(movieName);
+    turnOffPreloader();
+    showEmptySearchMsg();
   }
 
   return (
@@ -18,6 +28,7 @@ function SearchForm({ onSearchMovies }) {
         required
         id="name"
         placeholder="Фильм"
+        onChange={handleMovieNameChange}
       />
       <button type="submit" className="search__button">
         Найти

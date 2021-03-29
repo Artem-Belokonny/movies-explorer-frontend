@@ -1,12 +1,36 @@
 import React from "react";
 import Welcome from "../Welcome/Welcome.js";
-import { withRouter, Link } from 'react-router-dom';
+import { useHistory, withRouter, Link } from 'react-router-dom';
 import '../Login/Login.css';
 
-function Login() {
+function Login({ handleLogin }) {
+  const history = useHistory();
+  const [data, setData] = React.useState({
+    email: "",
+    password: "",
+  });
+
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    handleLogin(data)
+    .then(() => history.push('/movies'))
+    .catch((err) => {
+      alert(err);
+    });
+  }
+
+  function handleChange(evt) {
+    const { name, value } = evt.target;
+    setData({
+      ...data,
+      [name]: value,
+    })
+  }
+
   return (
     <>
       <Welcome
+      onSubmit={handleSubmit}
         name="login"
         title="Рады видеть!"
         textBtn="Войти"
@@ -19,6 +43,8 @@ function Login() {
               name="email"
               required
               placeholder="Email"
+              value={data.email}
+              onChange={handleChange}
             />
 						<p className="login__subtext">Пароль</p>
             <input
@@ -27,8 +53,10 @@ function Login() {
               name="password"
               required
               placeholder="Пароль"
-              minlength="2" 
-              maxlength="20"
+              minLength="2" 
+              maxLength="20"
+              value={data.password}
+              onChange={handleChange}
             />
           </>
         }

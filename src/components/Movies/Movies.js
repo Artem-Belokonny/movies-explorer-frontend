@@ -6,21 +6,48 @@ import SearchForm from "../SearchForm/SearchForm.js";
 import Footer from "../Footer/Footer.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import { withRouter } from "react-router-dom";
+import WindowSize from "../WindowSize/WindowSize.js";
 
-function Movies({ cards, onSearchMovies }) {
-    // Обработчик сабмита формы
-
-
+function Movies({
+  cards,
+  onChange,
+  onSubmit,
+  movieSearch,
+  isOn,
+  showEmptySearchMsg,
+  turnOffPreloader,
+  isVisible,
+  putCardLike,
+  isClicked,
+  deleteCardLike,
+  handleSaveMovie,
+  handleDeleteSavedMovie,
+}) {
   return (
     <>
+    <WindowSize />
       <Header />
       <section className="movies">
         <div className="movies__search">
-          <SearchForm onSearchMovies={onSearchMovies}/>
+          <SearchForm
+            showEmptySearchMsg={showEmptySearchMsg}
+            turnOffPreloader={turnOffPreloader}
+            movieSearch={movieSearch}
+            onChange={onChange}
+            onSubmit={onSubmit}
+          />
           <FilterCheckbox />
         </div>
-        <MoviesCardList cards={cards}/>
-        <button className="movies__moreButton">Ещё</button>
+        <MoviesCardList
+          isVisible={isVisible}
+          isOn={isOn}
+          cards={cards}
+          putCardLike={putCardLike}
+          isClicked={isClicked}
+          deleteCardLike={deleteCardLike}
+          handleSaveMovie={handleSaveMovie}
+          handleDeleteSavedMovie={handleDeleteSavedMovie}
+        />
       </section>
       <Footer />
     </>

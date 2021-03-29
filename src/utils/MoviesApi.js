@@ -2,6 +2,7 @@
 
 import { handleOriginalResponse } from "../utils/utils.js";
 
+
 export const MOVIES_URL = "https://api.nomoreparties.co/beatfilm-movies";
 
 export const getInitialMovies = () => {

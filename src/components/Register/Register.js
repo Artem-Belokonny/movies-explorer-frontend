@@ -1,12 +1,37 @@
 import React from "react";
 import Welcome from "../Welcome/Welcome.js";
-import { withRouter, Link } from "react-router-dom";
+import { useHistory, withRouter, Link } from "react-router-dom";
 import "../Register/Register.css";
 
-function Register() {
+function Register({ onRegister }) {
+  const [data, setData] = React.useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const history = useHistory();
+
+  function handleChange(evt) {
+    const { name, value } = evt.target;
+    setData({
+      ...data,
+      [name]: value,
+    });
+  }
+
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    onRegister(data)
+      .then(() => history.push("/movies"))
+      .catch((err) => {
+        alert(err);
+      });
+  }
+
   return (
     <>
       <Welcome
+        onSubmit={handleSubmit}
         name="register"
         title="Добро пожаловать!"
         textBtn="Зарегистрироваться"
@@ -20,8 +45,10 @@ function Register() {
               required
               placeholder="Имя"
               id="name"
-              minlength="2" 
-              maxlength="30"
+              minLength="2"
+              maxLength="30"
+              value={data.name}
+              onChange={handleChange}
             />
             <p className="register__subtext">E-mail</p>
             <input
@@ -31,6 +58,8 @@ function Register() {
               required
               placeholder="Email"
               id="email"
+              value={data.email}
+              onChange={handleChange}
             />
             <p className="register__subtext">Пароль</p>
             <input
@@ -40,8 +69,10 @@ function Register() {
               required
               placeholder="Пароль"
               id="password"
-              minlength="2" 
-              maxlength="20"
+              minLength="2"
+              maxLength="20"
+              value={data.password}
+              onChange={handleChange}
             />
           </>
         }
