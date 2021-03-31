@@ -8,6 +8,10 @@
     margin-bottom: 14px;
 }
 
+.moviesCard__container_hidden {
+    display: none;
+}
+
 .moviesCard__image {
     width: 100%;
     height: 233px;
@@ -42,6 +46,10 @@
     align-items: center;
 }
 
+.moviesCard__movieInfo_hidden {
+    display: none;
+}
+
 .moviesCard__movieName {
     font-style: normal; 
 	font-weight: 500; 
@@ -60,6 +68,10 @@
     background-color: #2F2F2F;
     margin: 0;
     padding: 3px 4px;
+}
+
+.moviesCard__movieDuration_hidden {
+    display: none;
 }
 
 .moviesCard__button_saved {
@@ -86,8 +98,8 @@
     height: 21px;
     border-radius: 50%;
     position: absolute;
-    bottom: 14px;
-    left: 14px;
+    top: 14px;
+    right: 14px;
     border: none;
     visibility: hidden;
 }

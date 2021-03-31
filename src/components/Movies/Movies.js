@@ -6,7 +6,6 @@ import SearchForm from "../SearchForm/SearchForm.js";
 import Footer from "../Footer/Footer.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import { withRouter } from "react-router-dom";
-import WindowSize from "../WindowSize/WindowSize.js";
 
 function Movies({
   cards,
@@ -17,16 +16,14 @@ function Movies({
   showEmptySearchMsg,
   turnOffPreloader,
   isVisible,
-  putCardLike,
-  isClicked,
-  deleteCardLike,
   handleSaveMovie,
   handleDeleteSavedMovie,
+  loggedIn,
+  savedMovies
 }) {
   return (
     <>
-    <WindowSize />
-      <Header />
+      <Header loggedIn={loggedIn} />
       <section className="movies">
         <div className="movies__search">
           <SearchForm
@@ -42,11 +39,9 @@ function Movies({
           isVisible={isVisible}
           isOn={isOn}
           cards={cards}
-          putCardLike={putCardLike}
-          isClicked={isClicked}
-          deleteCardLike={deleteCardLike}
           handleSaveMovie={handleSaveMovie}
           handleDeleteSavedMovie={handleDeleteSavedMovie}
+          savedMovies={savedMovies}
         />
       </section>
       <Footer />

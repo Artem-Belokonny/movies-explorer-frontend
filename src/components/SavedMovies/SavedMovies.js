@@ -7,17 +7,39 @@ import FilterCheckbox from "../FilterCheckbox/FilterCheckbox.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import { withRouter } from "react-router-dom";
 
-function SavedMovies({ cards, isSavedMovies }) {
-  
+function SavedMovies({
+  cards,
+  foundSavedCards,
+  isSavedMovies,
+  handleDeleteSavedMovie,
+  loggedIn,
+  savedMovieSearch,
+  onChange,
+  onSubmit,
+  isSavedSearch,
+  showSavedSearchedMovies
+}) {
   return (
     <>
-      <Header />
+      <Header loggedIn={loggedIn} />
       <section className="savedMovies">
         <div className="savedMovies__search">
-          <SearchForm />
+          <SearchForm
+            savedMovieSearch={savedMovieSearch}
+            onChange={onChange}
+            onSubmit={onSubmit}
+            isSavedMovies={isSavedMovies}
+            showSavedSearchedMovies={showSavedSearchedMovies}
+          />
           <FilterCheckbox />
         </div>
-        <MoviesCardList isSavedMovies={isSavedMovies} cards={cards}/>
+        <MoviesCardList
+          cards={cards}
+          foundSavedCards={foundSavedCards}
+          isSavedMovies={isSavedMovies}
+          handleDeleteSavedMovie={handleDeleteSavedMovie}
+          isSavedSearch={isSavedSearch}
+        />
       </section>
       <Footer />
     </>

@@ -16,9 +16,6 @@ class MainApi {
       headers: this.headers,
     })
       .then(handleOriginalResponse)
-      .then((result) => {
-        return result;
-      });
   }
 
   patchUserData(userData) {
@@ -31,34 +28,15 @@ class MainApi {
       }),
     })
       .then(handleOriginalResponse)
-      .then((result) => {
-        return result;
-      });
   }
 
   saveMovie(movieData) {
     return fetch(`${this.baseUrl}/movies`, {
       method: "POST",
       headers: this.headers,
-      body: JSON.stringify({
-        country: movieData.country,
-        director: movieData.director,
-        duration: movieData.duration,
-        year: movieData.year,
-        description: movieData.description,
-        image: movieData.image,
-        trailer: movieData.trailer,
-        movieId: movieData.movieId,
-        nameRU: movieData.nameRU,
-        nameEN: movieData.nameEN,
-        thumbnail: movieData.thumbnail,
-        owner: movieData.owner,
-      }),
+      body: JSON.stringify(movieData),
     })
       .then(handleOriginalResponse)
-      .then((data) => {
-        return data;
-      });
   }
 
   deleteMovie(movieData) {
@@ -67,9 +45,13 @@ class MainApi {
       headers: this.headers,
     })
       .then(handleOriginalResponse)
-      .then((data) => {
-        return data;
-      });
+  }
+
+  getSavedMovies() {
+    return fetch(`${this.baseUrl}/movies`, {
+      headers: this.headers,
+    })
+      .then(handleOriginalResponse)
   }
 
   register(name, email, password) {
@@ -82,9 +64,6 @@ class MainApi {
       body: JSON.stringify({ name, email, password }),
     })
       .then(handleOriginalResponse)
-      .then((data) => {
-        return data;
-      });
   }
 
   authorize(email, password) {
@@ -97,9 +76,6 @@ class MainApi {
       body: JSON.stringify({ email, password }),
     })
       .then(handleOriginalResponse)
-      .then((data) => {
-        return data;
-      });
   }
 
   getContent(token) {
@@ -111,9 +87,6 @@ class MainApi {
         'authorization': `Bearer ${token}`,
       },
     }).then(handleOriginalResponse)
-    .then((data) => {
-      return data;
-    });
   }
 }
 

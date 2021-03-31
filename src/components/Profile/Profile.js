@@ -4,7 +4,7 @@ import Header from "../Header/Header.js";
 import { withRouter } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 
-function Profile({ handleSignOut, onUpdateUser }) {
+function Profile({ handleSignOut, onUpdateUser, loggedIn }) {
   const currentUser = React.useContext(CurrentUserContext);
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -34,7 +34,7 @@ function Profile({ handleSignOut, onUpdateUser }) {
 
   return (
     <>
-      <Header />
+      <Header loggedIn={loggedIn} />
       <section className="profile">
         <div className="profile__container">
           <h1 className="profile__title">Привет, {currentUser.name}!</h1>

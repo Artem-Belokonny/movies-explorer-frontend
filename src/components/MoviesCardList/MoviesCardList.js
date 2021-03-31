@@ -8,12 +8,11 @@ function MoviesCardList({
   cards,
   isOn,
   isVisible,
-  putCardLike,
-  isClicked,
-  deleteCardLike,
   handleSaveMovie,
   handleDeleteSavedMovie,
-  isSavedMovies
+  isSavedMovies,
+  foundSavedCards,
+  isSavedSearch
 }) {
   const [searchedMovies, setSearchedMovies] = React.useState(12);
 
@@ -24,43 +23,69 @@ function MoviesCardList({
   return (
     <>
       <section className="moviesCardList">
-        <Preloader isOn={isOn} />
-        {cards.length === 0 ? (
-          <p
-            className={
-              isVisible
-                ? "moviesCardList__text"
-                : "moviesCardList__text moviesCardList__text_hidden"
-            }
-          >
-            К сожалению, по данному запросу ничего не найдено :(
-          </p>
+        {isSavedMovies ? (
+          <>
+            {isSavedSearch ? (
+              <div className="moviesCardList__cards-container">
+                {foundSavedCards.map((card) => (
+                  <MoviesCard
+                    key={card.id || card._id}
+                    card={card}
+                    handleDeleteSavedMovie={handleDeleteSavedMovie}
+                    isSavedMovies={isSavedMovies}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="moviesCardList__cards-container">
+                {cards.map((card) => (
+                  <MoviesCard
+                    key={card.id || card._id}
+                    card={card}
+                    handleDeleteSavedMovie={handleDeleteSavedMovie}
+                    isSavedMovies={isSavedMovies}
+                  />
+                ))}
+              </div>
+            )}
+          </>
         ) : (
-          <div className="moviesCardList__cards-container">
-            {cards.slice(0, searchedMovies).map((card) => (
-              <MoviesCard
-                key={card.id || card._id}
-                card={card}
-                putCardLike={putCardLike}
-                deleteCardLike={deleteCardLike}
-                isClicked={isClicked}
-                handleSaveMovie={handleSaveMovie}
-                handleDeleteSavedMovie={handleDeleteSavedMovie}
-                isSavedMovies={isSavedMovies}
-              />
-            ))}
-          </div>
+          <>
+            <Preloader isOn={isOn} />
+            {cards.length === 0 ? (
+              <p
+                className={
+                  isVisible
+                    ? "moviesCardList__text"
+                    : "moviesCardList__text moviesCardList__text_hidden"
+                }
+              >
+                К сожалению, по данному запросу ничего не найдено :(
+              </p>
+            ) : (
+              <div className="moviesCardList__cards-container">
+                {cards.slice(0, searchedMovies).map((card) => (
+                  <MoviesCard
+                    key={card.id || card._id}
+                    card={card}
+                    handleSaveMovie={handleSaveMovie}
+                    handleDeleteSavedMovie={handleDeleteSavedMovie}
+                  />
+                ))}
+              </div>
+            )}
+            <button
+              onClick={handleMoreBtnClick}
+              className={
+                cards.length > 12
+                  ? "moviesCardList__moreButton"
+                  : "moviesCardList__moreButton_hidden"
+              }
+            >
+              Ещё
+            </button>
+          </>
         )}
-        <button
-          onClick={handleMoreBtnClick}
-          className={
-            cards.length > 12
-              ? "moviesCardList__moreButton"
-              : "moviesCardList__moreButton_hidden"
-          }
-        >
-          Ещё
-        </button>
       </section>
     </>
   );

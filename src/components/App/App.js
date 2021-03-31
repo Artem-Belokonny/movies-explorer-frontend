@@ -8,6 +8,7 @@ import SavedMovies from "../SavedMovies/SavedMovies.js";
 import Error from "../Error/Error.js";
 import "../App/App.css";
 import "../../index.css";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import {
   useHistory,
   Route,
@@ -29,11 +30,12 @@ function App() {
   });
   const [movies, setMovies] = React.useState([]);
   const [foundMovies, setFoundMovies] = React.useState([]);
+  const [foundSavedMovies, setFoundSavedMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [isPreloaderOn, setIsPreloaderOn] = React.useState(true);
   const [isEmptySearch, setIsEmptySearch] = React.useState(false);
-  const [isCardLikeClicked, setIsCardLikeClicked] = React.useState(false);
   const [isSavedMoviesState, setIsSavedMoviesState] = React.useState(true);
+  const [isSavedSearch, setIsSavedSearch] = React.useState(false);
 
   React.useEffect(() => {
     const token = localStorage.getItem("jwt");
@@ -49,12 +51,17 @@ function App() {
   React.useEffect(() => {
     if (loggedIn) {
       mainApi.setToken(localStorage.getItem("jwt"));
-      history.push("/movies");
-      Promise.all([mainApi.getUserData(), moviesApi.getInitialMovies()])
-        .then(([userData, cardData]) => {
+      Promise.all([
+        mainApi.getUserData(),
+        moviesApi.getInitialMovies(),
+        mainApi.getSavedMovies(),
+      ])
+        .then(([userData, cardData, savedCardData]) => {
           setCurrentUser(userData);
           localStorage.setItem("cardData", JSON.stringify(cardData));
-          setMovies(cardData);
+          setMovies(JSON.parse(localStorage.getItem("cardData")));
+          localStorage.setItem("savedCardData", JSON.stringify(savedCardData));
+          setSavedMovies(JSON.parse(localStorage.getItem("savedCardData")));
         })
         .catch((err) => {
           alert(err);
@@ -64,7 +71,7 @@ function App() {
 
   function tokenCheck(jwt) {
     mainApi
-      .getContent(jwt)
+      .getUserData(jwt)
       .then((res) => {
         if (res) {
           const userData = {
@@ -73,7 +80,6 @@ function App() {
           };
           setLoggedIn(true);
           setUserData(userData);
-          history.push("/movies");
         }
       })
       .catch((err) => {
@@ -87,6 +93,7 @@ function App() {
     return mainApi
       .register(name, email, password)
       .then((res) => {
+        setCurrentUser(res);
         history.push("/movies");
         console.log(res);
       })
@@ -140,20 +147,26 @@ function App() {
     return setFoundMovies(foundMovie);
   }
 
+    // Функция поиска фильмов saved-movies
+    function savedMovieSearch(searchBar) {
+      const foundSavedMovie = savedMovies.filter((movie) => {
+        return movie.nameRU.toLowerCase().includes(searchBar.toLowerCase());
+      });
+      return setFoundSavedMovies(foundSavedMovie);
+    }
+
+  // выключение Прелоудера
   function turnOffPreloader() {
     setIsPreloaderOn(false);
   }
 
+  // показ сообщение о неудачном поиске
   function showEmptySearchMsg() {
     setIsEmptySearch(true);
   }
 
-  function putCardLike() {
-    setIsCardLikeClicked(true);
-  }
-
-  function deleteCardLike() {
-    setIsCardLikeClicked(false);
+  function showSavedSearchedMovies() {
+    setIsSavedSearch(true);
   }
 
   // Функция добавления в избранное
@@ -162,7 +175,6 @@ function App() {
       .saveMovie(movieData)
       .then((newMovie) => {
         setSavedMovies([newMovie.data, ...savedMovies]);
-        console.log(newMovie);
       })
       .catch((err) => {
         console.log(err);
@@ -172,11 +184,12 @@ function App() {
   // Функция удаления из избранного
   function handleDeleteSavedMovie(movieData) {
     mainApi
-      .deleteMovie(movieData)
-      .then((movieData) => {
+      .deleteMovie(movieData._id)
+      .then(() => {
         const newCardsArr = savedMovies.filter((c) => c._id !== movieData._id);
+        const newSavedCardsArr = savedMovies.filter((c) => c._id !== movieData._id);
         setSavedMovies(newCardsArr);
-        console.log(newCardsArr);
+        setFoundSavedMovies(newSavedCardsArr);
       })
       .catch((err) => {
         console.log(err);
@@ -188,13 +201,13 @@ function App() {
       <div className="page">
         <Switch>
           <Route exact path="/">
-            <Main />
+            <Main loggedIn={loggedIn} />
           </Route>
           <Route path="/signup">
             <Register onRegister={handleRegister} />
           </Route>
           <Route path="/signin">
-            <Login handleLogin={handleLogin} tokenCheck={tokenCheck} />
+            <Login handleLogin={handleLogin} />
           </Route>
           <Route path="/profile">
             <Profile
@@ -207,23 +220,26 @@ function App() {
             <Movies
               loggedIn={loggedIn}
               cards={foundMovies}
-              movieSearch={movieSearch}
               isOn={isPreloaderOn}
               isVisible={isEmptySearch}
+              movieSearch={movieSearch}
               turnOffPreloader={turnOffPreloader}
               showEmptySearchMsg={showEmptySearchMsg}
-              isClicked={isCardLikeClicked}
-              putCardLike={putCardLike}
-              deleteCardLike={deleteCardLike}
               handleSaveMovie={handleSaveMovie}
               handleDeleteSavedMovie={handleDeleteSavedMovie}
+              savedMovies={savedMovies}
             />
           </Route>
           <Route path="/saved-movies">
             <SavedMovies
               loggedIn={loggedIn}
               cards={savedMovies}
+              foundSavedCards={foundSavedMovies}
               isSavedMovies={isSavedMoviesState}
+              handleDeleteSavedMovie={handleDeleteSavedMovie}
+              savedMovieSearch={savedMovieSearch}
+              isSavedSearch={isSavedSearch}
+              showSavedSearchedMovies={showSavedSearchedMovies}
             />
           </Route>
           <Route path="/error">
