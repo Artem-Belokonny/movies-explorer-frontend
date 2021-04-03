@@ -1,4 +1,3 @@
-// файл будет содержать описание запросов к нашему Api
 import { handleOriginalResponse } from "../utils/utils.js";
 
 class MainApi {

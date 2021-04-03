@@ -7,7 +7,7 @@ function MoviesCard({
   handleSaveMovie,
   handleDeleteSavedMovie,
   isSavedMovies,
-  savedMovies  
+  savedMovies,
 }) {
   const MOVIES_IMAGE_URL = "https://api.nomoreparties.co";
   const [isCardLikeClicked, setIsCardLikeClicked] = React.useState(false);
@@ -16,7 +16,8 @@ function MoviesCard({
     isCardLikeClicked ? "moviesCard__button_saved" : "moviesCard__button"
   }`;
 
-  function handleLikeClick() {
+  function handleLikeClick(evt) {
+    evt.stopPropagation();
     if (!isCardLikeClicked) {
       handleSaveMovie({
         country: card.country || "default",
@@ -44,7 +45,8 @@ function MoviesCard({
     }
   }
 
-  function handleDeleteClick() {
+  function handleDeleteClick(evt) {
+    evt.stopPropagation();
     handleDeleteSavedMovie(card);
   }
 
@@ -58,11 +60,13 @@ function MoviesCard({
               className="moviesCard__button_delete"
               onClick={handleDeleteClick}
             />
-            <img
-              src={`${card.image !== null ? `${card.image}` : noImage}`}
-              alt={card.nameRU}
-              className="moviesCard__image"
-            />
+            <a href={card.trailer} target="_blank" rel="noreferrer">
+              <img
+                src={`${card.image !== null ? `${card.image}` : noImage}`}
+                alt={card.nameRU}
+                className="moviesCard__image"
+              />
+            </a>
           </div>
           <div className="moviesCard__movieInfo">
             <p className="moviesCard__movieName">{card.nameRU}</p>
@@ -77,6 +81,7 @@ function MoviesCard({
               className={cardLikeButtonClassName}
               onClick={handleLikeClick}
             />
+            <a href={card.trailerLink} target="_blank" rel="noreferrer">
             <img
               src={`${
                 card.image !== null
@@ -86,6 +91,7 @@ function MoviesCard({
               alt={card.nameRU}
               className="moviesCard__image"
             />
+            </a>
           </div>
           <div className="moviesCard__movieInfo">
             <p className="moviesCard__movieName">{card.nameRU}</p>

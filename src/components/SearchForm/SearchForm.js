@@ -45,7 +45,6 @@ function SearchForm({
               className="search__input"
               type="text"
               name="name"
-              required
               id="name"
               placeholder="Фильм"
               onChange={handleSavedMovieNameChange}

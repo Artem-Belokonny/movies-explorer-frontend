@@ -4,20 +4,25 @@ import { useHistory, withRouter, Link } from "react-router-dom";
 import "../Register/Register.css";
 
 function Register({ onRegister }) {
+  const history = useHistory();
+
+
   const [data, setData] = React.useState({
     name: "",
     email: "",
     password: "",
   });
-  const history = useHistory();
+  const [errors, setErrors] = React.useState({});
+  const [isValid, setIsValid] = React.useState(false);
 
-  function handleChange(evt) {
-    const { name, value } = evt.target;
-    setData({
-      ...data,
-      [name]: value,
-    });
-  }
+  const handleChange = (evt) => {
+    const target = evt.target;
+    const name = target.name;
+    const value = target.value;
+    setData({ ...data, [name]: value });
+    setErrors({ ...errors, [name]: target.validationMessage });
+    setIsValid(target.closest("form").checkValidity());
+  };
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -32,6 +37,7 @@ function Register({ onRegister }) {
     <>
       <Welcome
         onSubmit={handleSubmit}
+        isValid={isValid}
         name="register"
         title="Добро пожаловать!"
         textBtn="Зарегистрироваться"
@@ -50,6 +56,7 @@ function Register({ onRegister }) {
               value={data.name}
               onChange={handleChange}
             />
+            <p className="register__error-text">{errors.name}</p>
             <p className="register__subtext">E-mail</p>
             <input
               className="welcome__input"
@@ -61,6 +68,7 @@ function Register({ onRegister }) {
               value={data.email}
               onChange={handleChange}
             />
+            <p className="register__error-text">{errors.email}</p>
             <p className="register__subtext">Пароль</p>
             <input
               className="welcome__input"
@@ -74,6 +82,7 @@ function Register({ onRegister }) {
               value={data.password}
               onChange={handleChange}
             />
+            <p className="register__error-text">{errors.password}</p>
           </>
         }
         childrenSubtitle={

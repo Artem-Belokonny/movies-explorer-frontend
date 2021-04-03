@@ -12,7 +12,8 @@ function MoviesCardList({
   handleDeleteSavedMovie,
   isSavedMovies,
   foundSavedCards,
-  isSavedSearch
+  isSavedSearch,
+  savedMovies
 }) {
   const [searchedMovies, setSearchedMovies] = React.useState(12);
 
@@ -70,6 +71,7 @@ function MoviesCardList({
                     card={card}
                     handleSaveMovie={handleSaveMovie}
                     handleDeleteSavedMovie={handleDeleteSavedMovie}
+                    savedMovies={savedMovies}
                   />
                 ))}
               </div>

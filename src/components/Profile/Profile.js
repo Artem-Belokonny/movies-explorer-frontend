@@ -6,30 +6,39 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 
 function Profile({ handleSignOut, onUpdateUser, loggedIn }) {
   const currentUser = React.useContext(CurrentUserContext);
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
+  const [data, setData] = React.useState({
+    name: "",
+    email: "",
+  });
+  const [errors, setErrors] = React.useState({});
+  const [isValid, setIsValid] = React.useState(false);
+  const [isSuccess, setIsSuccess] = React.useState("");
 
-    // Монтирование эффекта установки данных пользователя
+  const profileButtonClassName = `${
+    isValid ? "profile__button" : "profile__button_disabled"
+  }`;
+
     React.useEffect(() => {
-      setName(currentUser.name || '');
-      setEmail(currentUser.email || '');
+      setData({
+        name: (currentUser.name || ''),
+        email: (currentUser.email || '')
+      })
     }, [currentUser]);
 
-      // Управляемые компоненты input полей формы
-  function handleNameChange(evt) {
-    setName(evt.target.value);
-  }
-  function handleEmailChange(evt) {
-    setEmail(evt.target.value);
-  }
+  const handleChange = (evt) => {
+    const target = evt.target;
+    const name = target.name;
+    const value = target.value;
+    setData({ ...data, [name]: value });
+    setErrors({ ...errors, [name]: target.validationMessage });
+    setIsValid(target.closest("form").checkValidity());
+  };
 
     // Обработчик сабмита формы
     function handleSubmit(evt) {
       evt.preventDefault();
-      onUpdateUser({
-        name,
-        email,
-      });
+      onUpdateUser(data);
+      setIsSuccess("Данные успешно изменены")
     }
 
   return (
@@ -38,8 +47,8 @@ function Profile({ handleSignOut, onUpdateUser, loggedIn }) {
       <section className="profile">
         <div className="profile__container">
           <h1 className="profile__title">Привет, {currentUser.name}!</h1>
-          <form className="profile__form" onSubmit={handleSubmit}>
-            <p className="register__text">Имя</p>
+          <form className="profile__form" onSubmit={handleSubmit} id="edit">
+            <p className="profile__text">Имя</p>
             <input
               className="profile__input"
               type="text"
@@ -47,14 +56,15 @@ function Profile({ handleSignOut, onUpdateUser, loggedIn }) {
               required
               id="name"
               placeholder="Введите имя"
-              value={name}
+              value={data.name}
               minLength="2"
               maxLength="30"
-              onChange={handleNameChange}
+              onChange={handleChange}
             />
           </form>
+          <p className="profile__error-text">{errors.name}</p>
           <form className="profile__form">
-            <p className="register__text">Почта</p>
+            <p className="profile__text">Почта</p>
             <input
               className="profile__input"
               type="email"
@@ -62,14 +72,13 @@ function Profile({ handleSignOut, onUpdateUser, loggedIn }) {
               required
               id="email"
               placeholder="Введите email"
-              value={email}
-              onChange={handleEmailChange}
+              value={data.email}
+              onChange={handleChange}
             />
-            {/* <button type="submit" className="profile__button">
-              Редактировать
-            </button> */}
           </form>
-          <button type="submit" className="profile__button">
+          <p className="profile__error-text">{errors.email}</p>
+          <p className="profile__error-text">{isSuccess}</p>
+          <button form="edit" type="submit" className={profileButtonClassName}>
               Редактировать
             </button>
           <button

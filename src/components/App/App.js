@@ -36,15 +36,18 @@ function App() {
   const [isEmptySearch, setIsEmptySearch] = React.useState(false);
   const [isSavedMoviesState, setIsSavedMoviesState] = React.useState(true);
   const [isSavedSearch, setIsSavedSearch] = React.useState(false);
+  const [permissonCheck, setPermissonCheck] = React.useState(false);
 
   React.useEffect(() => {
     const token = localStorage.getItem("jwt");
     if (!token) {
+      setPermissonCheck(true);
       return;
     }
     mainApi.setToken(token);
-    setLoggedIn(true);
+    setPermissonCheck(true);
     tokenCheck(token);
+    setLoggedIn(true);
   }, []);
 
   // Монтирование эффекта через Promise.all
@@ -67,11 +70,11 @@ function App() {
           alert(err);
         });
     }
-  }, [loggedIn, history]);
+  }, [loggedIn]);
 
   function tokenCheck(jwt) {
     mainApi
-      .getUserData(jwt)
+      .getContent(jwt)
       .then((res) => {
         if (res) {
           const userData = {
@@ -84,6 +87,9 @@ function App() {
       })
       .catch((err) => {
         alert(err);
+      })
+      .finally(() => {
+        setPermissonCheck(true);
       });
   }
 
@@ -109,14 +115,13 @@ function App() {
       .authorize(email, password)
       .then((res) => {
         if (res.token) {
-          setLoggedIn(true);
           localStorage.setItem("jwt", res.token);
-          console.log(res.token);
           mainApi.setToken(res.token);
+          setLoggedIn(true);
         }
       })
       .catch((err) => {
-        alert(err);
+        console.log(err);
       });
   }
 
@@ -134,8 +139,8 @@ function App() {
       .then((res) => {
         setCurrentUser(res);
       })
-      .catch((err) => {
-        alert(err);
+      .catch((res) => {
+        console.log(res);
       });
   }
 
@@ -147,13 +152,13 @@ function App() {
     return setFoundMovies(foundMovie);
   }
 
-    // Функция поиска фильмов saved-movies
-    function savedMovieSearch(searchBar) {
-      const foundSavedMovie = savedMovies.filter((movie) => {
-        return movie.nameRU.toLowerCase().includes(searchBar.toLowerCase());
-      });
-      return setFoundSavedMovies(foundSavedMovie);
-    }
+  // Функция поиска фильмов saved-movies
+  function savedMovieSearch(searchBar) {
+    const foundSavedMovie = savedMovies.filter((movie) => {
+      return movie.nameRU.toLowerCase().includes(searchBar.toLowerCase());
+    });
+    return setFoundSavedMovies(foundSavedMovie);
+  }
 
   // выключение Прелоудера
   function turnOffPreloader() {
@@ -187,13 +192,21 @@ function App() {
       .deleteMovie(movieData._id)
       .then(() => {
         const newCardsArr = savedMovies.filter((c) => c._id !== movieData._id);
-        const newSavedCardsArr = savedMovies.filter((c) => c._id !== movieData._id);
+        const newSavedCardsArr = savedMovies.filter(
+          (c) => c._id !== movieData._id
+        );
         setSavedMovies(newCardsArr);
         setFoundSavedMovies(newSavedCardsArr);
       })
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  console.log(loggedIn);
+
+  if (!permissonCheck) {
+    return null;
   }
 
   return (
@@ -207,44 +220,47 @@ function App() {
             <Register onRegister={handleRegister} />
           </Route>
           <Route path="/signin">
-            <Login handleLogin={handleLogin} />
+            <Login handleLogin={handleLogin} tokenCheck={tokenCheck} />
           </Route>
-          <Route path="/profile">
-            <Profile
-              loggedIn={loggedIn}
-              handleSignOut={handleSignOut}
-              onUpdateUser={handleUpdateUser}
-            />
-          </Route>
-          <Route path="/movies">
-            <Movies
-              loggedIn={loggedIn}
-              cards={foundMovies}
-              isOn={isPreloaderOn}
-              isVisible={isEmptySearch}
-              movieSearch={movieSearch}
-              turnOffPreloader={turnOffPreloader}
-              showEmptySearchMsg={showEmptySearchMsg}
-              handleSaveMovie={handleSaveMovie}
-              handleDeleteSavedMovie={handleDeleteSavedMovie}
-              savedMovies={savedMovies}
-            />
-          </Route>
-          <Route path="/saved-movies">
-            <SavedMovies
-              loggedIn={loggedIn}
-              cards={savedMovies}
-              foundSavedCards={foundSavedMovies}
-              isSavedMovies={isSavedMoviesState}
-              handleDeleteSavedMovie={handleDeleteSavedMovie}
-              savedMovieSearch={savedMovieSearch}
-              isSavedSearch={isSavedSearch}
-              showSavedSearchedMovies={showSavedSearchedMovies}
-            />
-          </Route>
-          <Route path="/error">
+          <ProtectedRoute
+            path="/profile"
+            loggedIn={loggedIn}
+            handleSignOut={handleSignOut}
+            onUpdateUser={handleUpdateUser}
+            component={Profile}
+          />
+          <ProtectedRoute
+            path="/movies"
+            loggedIn={loggedIn}
+            cards={foundMovies}
+            isOn={isPreloaderOn}
+            isVisible={isEmptySearch}
+            movieSearch={movieSearch}
+            turnOffPreloader={turnOffPreloader}
+            showEmptySearchMsg={showEmptySearchMsg}
+            handleSaveMovie={handleSaveMovie}
+            handleDeleteSavedMovie={handleDeleteSavedMovie}
+            savedMovies={savedMovies}
+            component={Movies}
+          />
+          <ProtectedRoute
+            path="/saved-movies"
+            loggedIn={loggedIn}
+            cards={savedMovies}
+            foundSavedCards={foundSavedMovies}
+            isSavedMovies={isSavedMoviesState}
+            handleDeleteSavedMovie={handleDeleteSavedMovie}
+            savedMovieSearch={savedMovieSearch}
+            isSavedSearch={isSavedSearch}
+            showSavedSearchedMovies={showSavedSearchedMovies}
+            component={SavedMovies}
+          />
+          <Route path="*">
             <Error />
           </Route>
+          {/* <Route>
+            {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/signin" />}
+          </Route> */}
         </Switch>
       </div>
     </CurrentUserContext.Provider>
