@@ -6,19 +6,14 @@ import Profile from "../Profile/Profile.js";
 import Movies from "../Movies/Movies.js";
 import SavedMovies from "../SavedMovies/SavedMovies.js";
 import Error from "../Error/Error.js";
-import "../App/App.css";
-import "../../index.css";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
-import {
-  useHistory,
-  Route,
-  Redirect,
-  Switch,
-  withRouter,
-} from "react-router-dom";
 import * as moviesApi from "../../utils/MoviesApi.js";
 import mainApi from "../../utils/MainApi.js";
+import { useHistory, Route, Switch, withRouter } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
+import { SHORT_MOVIE_DURATION } from "../../utils/constant.js";
+import "../App/App.css";
+import "../../index.css";
 
 function App() {
   const history = useHistory();
@@ -32,11 +27,12 @@ function App() {
   const [foundMovies, setFoundMovies] = React.useState([]);
   const [foundSavedMovies, setFoundSavedMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
-  const [isPreloaderOn, setIsPreloaderOn] = React.useState(true);
   const [isEmptySearch, setIsEmptySearch] = React.useState(false);
   const [isSavedMoviesState, setIsSavedMoviesState] = React.useState(true);
   const [isSavedSearch, setIsSavedSearch] = React.useState(false);
   const [permissonCheck, setPermissonCheck] = React.useState(false);
+  const [isShortMovies, setIsShortMovies] = React.useState(false);
+  const [isSearching, setIsSearching] = React.useState(false);
 
   React.useEffect(() => {
     const token = localStorage.getItem("jwt");
@@ -50,7 +46,7 @@ function App() {
     setLoggedIn(true);
   }, []);
 
-  // Монтирование эффекта через Promise.all
+  // Монтирование эффектов на данные пользователя и карточки фильмов
   React.useEffect(() => {
     if (loggedIn) {
       mainApi.setToken(localStorage.getItem("jwt"));
@@ -68,6 +64,7 @@ function App() {
         })
         .catch((err) => {
           alert(err);
+          console.log(err);
         });
     }
   }, [loggedIn]);
@@ -87,6 +84,7 @@ function App() {
       })
       .catch((err) => {
         alert(err);
+        console.log(err);
       })
       .finally(() => {
         setPermissonCheck(true);
@@ -99,11 +97,12 @@ function App() {
     return mainApi
       .register(name, email, password)
       .then((res) => {
+        handleLogin({ email, password });
         setCurrentUser(res);
-        history.push("/movies");
         console.log(res);
       })
       .catch((err) => {
+        alert(err);
         console.log(err);
       });
   }
@@ -118,9 +117,11 @@ function App() {
           localStorage.setItem("jwt", res.token);
           mainApi.setToken(res.token);
           setLoggedIn(true);
+          history.push("/movies");
         }
       })
       .catch((err) => {
+        alert(err);
         console.log(err);
       });
   }
@@ -139,30 +140,59 @@ function App() {
       .then((res) => {
         setCurrentUser(res);
       })
-      .catch((res) => {
-        console.log(res);
+      .catch((err) => {
+        alert(err);
+        console.log(err);
       });
+  }
+
+  // Имитация ожидания загрузки
+  function startPreloader() {
+    setIsSearching(true);
+    setTimeout(async () => {
+      setIsSearching(false);
+    }, 100);
+  }
+
+  // Переключение чекбокса для поиска
+  function handleToggleCheckbox() {
+    setIsShortMovies(!isShortMovies);
   }
 
   // Функция поиска фильмов movies
   function movieSearch(searchBar) {
-    const foundMovie = movies.filter((movie) => {
-      return movie.nameRU.toLowerCase().includes(searchBar.toLowerCase());
-    });
-    return setFoundMovies(foundMovie);
+    if (isShortMovies) {
+      const shortMovie = movies.filter((movie) => {
+        return (
+          movie.duration <= SHORT_MOVIE_DURATION &&
+          movie.nameRU.toLowerCase().includes(searchBar.toLowerCase())
+        );
+      });
+      setFoundMovies(shortMovie);
+    } else {
+      const foundMovie = movies.filter((movie) => {
+        return movie.nameRU.toLowerCase().includes(searchBar.toLowerCase());
+      });
+      return setFoundMovies(foundMovie);
+    }
   }
 
   // Функция поиска фильмов saved-movies
   function savedMovieSearch(searchBar) {
-    const foundSavedMovie = savedMovies.filter((movie) => {
-      return movie.nameRU.toLowerCase().includes(searchBar.toLowerCase());
-    });
-    return setFoundSavedMovies(foundSavedMovie);
-  }
-
-  // выключение Прелоудера
-  function turnOffPreloader() {
-    setIsPreloaderOn(false);
+    if (isShortMovies) {
+      const shortMovie = savedMovies.filter((movie) => {
+        return (
+          movie.duration <= SHORT_MOVIE_DURATION &&
+          movie.nameRU.toLowerCase().includes(searchBar.toLowerCase())
+        );
+      });
+      setFoundSavedMovies(shortMovie);
+    } else {
+      const foundSavedMovie = savedMovies.filter((movie) => {
+        return movie.nameRU.toLowerCase().includes(searchBar.toLowerCase());
+      });
+      return setFoundSavedMovies(foundSavedMovie);
+    }
   }
 
   // показ сообщение о неудачном поиске
@@ -203,8 +233,6 @@ function App() {
       });
   }
 
-  console.log(loggedIn);
-
   if (!permissonCheck) {
     return null;
   }
@@ -217,50 +245,51 @@ function App() {
             <Main loggedIn={loggedIn} />
           </Route>
           <Route path="/signup">
-            <Register onRegister={handleRegister} />
+            <Register onRegister={handleRegister} loggedIn={loggedIn} />
           </Route>
           <Route path="/signin">
-            <Login handleLogin={handleLogin} tokenCheck={tokenCheck} />
+            <Login onLogin={handleLogin} loggedIn={loggedIn} />
           </Route>
           <ProtectedRoute
             path="/profile"
-            loggedIn={loggedIn}
-            handleSignOut={handleSignOut}
-            onUpdateUser={handleUpdateUser}
             component={Profile}
+            onSignOut={handleSignOut}
+            onUpdateUser={handleUpdateUser}
+            loggedIn={loggedIn}
           />
           <ProtectedRoute
             path="/movies"
-            loggedIn={loggedIn}
-            cards={foundMovies}
-            isOn={isPreloaderOn}
-            isVisible={isEmptySearch}
+            component={Movies}
             movieSearch={movieSearch}
-            turnOffPreloader={turnOffPreloader}
             showEmptySearchMsg={showEmptySearchMsg}
             handleSaveMovie={handleSaveMovie}
             handleDeleteSavedMovie={handleDeleteSavedMovie}
+            setIsSearching={setIsSearching}
+            startPreloader={startPreloader}
+            handleToggleCheckbox={handleToggleCheckbox}
+            loggedIn={loggedIn}
+            cards={foundMovies}
+            isVisible={isEmptySearch}
+            isShortMovies={isShortMovies}
+            isSearching={isSearching}
             savedMovies={savedMovies}
-            component={Movies}
           />
           <ProtectedRoute
             path="/saved-movies"
+            component={SavedMovies}
+            handleDeleteSavedMovie={handleDeleteSavedMovie}
+            savedMovieSearch={savedMovieSearch}
+            showSavedSearchedMovies={showSavedSearchedMovies}
             loggedIn={loggedIn}
             cards={savedMovies}
             foundSavedCards={foundSavedMovies}
             isSavedMovies={isSavedMoviesState}
-            handleDeleteSavedMovie={handleDeleteSavedMovie}
-            savedMovieSearch={savedMovieSearch}
             isSavedSearch={isSavedSearch}
-            showSavedSearchedMovies={showSavedSearchedMovies}
-            component={SavedMovies}
+            savedMovies={savedMovies}
           />
           <Route path="*">
             <Error />
           </Route>
-          {/* <Route>
-            {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/signin" />}
-          </Route> */}
         </Switch>
       </div>
     </CurrentUserContext.Provider>

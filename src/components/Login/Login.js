@@ -3,7 +3,7 @@ import Welcome from "../Welcome/Welcome.js";
 import { useHistory, withRouter, Link } from "react-router-dom";
 import "../Login/Login.css";
 
-function Login({ handleLogin }) {
+function Login({ onLogin, loggedIn }) {
   const history = useHistory();
   const [data, setData] = React.useState({
     email: "",
@@ -12,13 +12,21 @@ function Login({ handleLogin }) {
   const [errors, setErrors] = React.useState({});
   const [isValid, setIsValid] = React.useState(false);
 
+  React.useEffect(() => {
+    if (loggedIn) {
+      history.push("/");
+    }
+  }, [history, loggedIn]);
+
   function handleSubmit(evt) {
     evt.preventDefault();
-    handleLogin(data)
+    onLogin(data)
       .then(() => history.push("/movies"))
       .catch((err) => {
         alert(err);
+        console.log(err);
       });
+    setIsValid(false);
   }
 
   const handleChange = (evt) => {

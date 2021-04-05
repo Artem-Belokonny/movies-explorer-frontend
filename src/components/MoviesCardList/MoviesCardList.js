@@ -3,23 +3,46 @@ import "../MoviesCardList/MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard.js";
 import Preloader from "../Preloader/Preloader.js";
 import { withRouter } from "react-router-dom";
+import { useWindowSize } from "../../utils/utils.js";
+import { MAX_WIDTH, MEDIUM_WIDTH, MIN_WIDTH } from "../../utils/constant";
 
 function MoviesCardList({
   cards,
-  isOn,
+  isSearching,
   isVisible,
   handleSaveMovie,
   handleDeleteSavedMovie,
   isSavedMovies,
   foundSavedCards,
   isSavedSearch,
-  savedMovies
+  savedMovies,
 }) {
-  const [searchedMovies, setSearchedMovies] = React.useState(12);
+  const windowWidth = useWindowSize();
+  const [initialCards, setInitialCards] = React.useState(0);
+  const [moreCards, setMoreCards] = React.useState(0);
 
   function handleMoreBtnClick() {
-    setSearchedMovies(searchedMovies + 3);
+    setInitialCards(initialCards + moreCards);
   }
+
+  React.useEffect(() => {
+    if (windowWidth >= MAX_WIDTH) {
+      setInitialCards(12);
+      setMoreCards(4);
+    }
+    if (windowWidth < MAX_WIDTH && windowWidth >= MEDIUM_WIDTH) {
+      setInitialCards(12);
+      setMoreCards(3);
+    }
+    if (windowWidth < MEDIUM_WIDTH && windowWidth >= MIN_WIDTH) {
+      setInitialCards(8);
+      setMoreCards(2);
+    }
+    if (windowWidth < MIN_WIDTH) {
+      setInitialCards(5);
+      setMoreCards(1);
+    }
+  }, [windowWidth]);
 
   return (
     <>
@@ -34,6 +57,7 @@ function MoviesCardList({
                     card={card}
                     handleDeleteSavedMovie={handleDeleteSavedMovie}
                     isSavedMovies={isSavedMovies}
+                    savedMovies={savedMovies}
                   />
                 ))}
               </div>
@@ -45,6 +69,7 @@ function MoviesCardList({
                     card={card}
                     handleDeleteSavedMovie={handleDeleteSavedMovie}
                     isSavedMovies={isSavedMovies}
+                    savedMovies={savedMovies}
                   />
                 ))}
               </div>
@@ -52,7 +77,7 @@ function MoviesCardList({
           </>
         ) : (
           <>
-            <Preloader isOn={isOn} />
+            {isSearching && <Preloader />}
             {cards.length === 0 ? (
               <p
                 className={
@@ -65,7 +90,7 @@ function MoviesCardList({
               </p>
             ) : (
               <div className="moviesCardList__cards-container">
-                {cards.slice(0, searchedMovies).map((card) => (
+                {cards.slice(0, initialCards).map((card) => (
                   <MoviesCard
                     key={card.id || card._id}
                     card={card}
@@ -79,9 +104,9 @@ function MoviesCardList({
             <button
               onClick={handleMoreBtnClick}
               className={
-                cards.length > 12
-                  ? "moviesCardList__moreButton"
-                  : "moviesCardList__moreButton_hidden"
+                cards.length <= 12 || initialCards >= cards.length
+                  ? "moviesCardList__moreButton_hidden"
+                  : "moviesCardList__moreButton"
               }
             >
               Ещё

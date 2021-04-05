@@ -3,10 +3,8 @@ import Welcome from "../Welcome/Welcome.js";
 import { useHistory, withRouter, Link } from "react-router-dom";
 import "../Register/Register.css";
 
-function Register({ onRegister }) {
+function Register({ onRegister, loggedIn }) {
   const history = useHistory();
-
-
   const [data, setData] = React.useState({
     name: "",
     email: "",
@@ -14,6 +12,12 @@ function Register({ onRegister }) {
   });
   const [errors, setErrors] = React.useState({});
   const [isValid, setIsValid] = React.useState(false);
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      history.push("/");
+    }
+  }, [history, loggedIn]);
 
   const handleChange = (evt) => {
     const target = evt.target;
@@ -30,7 +34,9 @@ function Register({ onRegister }) {
       .then(() => history.push("/movies"))
       .catch((err) => {
         alert(err);
+        console.log(err);
       });
+    setIsValid(false);
   }
 
   return (

@@ -1,25 +1,29 @@
 import React from "react";
-import "../Movies/Movies.css";
 import Header from "../Header/Header.js";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox.js";
 import SearchForm from "../SearchForm/SearchForm.js";
 import Footer from "../Footer/Footer.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import { withRouter } from "react-router-dom";
+import "../Movies/Movies.css";
 
 function Movies({
   cards,
   onChange,
   onSubmit,
   movieSearch,
-  isOn,
   showEmptySearchMsg,
   turnOffPreloader,
   isVisible,
   handleSaveMovie,
   handleDeleteSavedMovie,
   loggedIn,
-  savedMovies
+  savedMovies,
+  windowWidth,
+  isShortMovies,
+  handleToggleCheckbox,
+  isSearching,
+  startPreloader,
 }) {
   return (
     <>
@@ -32,16 +36,21 @@ function Movies({
             movieSearch={movieSearch}
             onChange={onChange}
             onSubmit={onSubmit}
+            startPreloader={startPreloader}
           />
-          <FilterCheckbox />
+          <FilterCheckbox
+            isShortMovies={isShortMovies}
+            handleToggleCheckbox={handleToggleCheckbox}
+          />
         </div>
         <MoviesCardList
           isVisible={isVisible}
-          isOn={isOn}
           cards={cards}
           handleSaveMovie={handleSaveMovie}
           handleDeleteSavedMovie={handleDeleteSavedMovie}
           savedMovies={savedMovies}
+          windowWidth={windowWidth}
+          isSearching={isSearching}
         />
       </section>
       <Footer />

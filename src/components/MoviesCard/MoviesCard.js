@@ -1,6 +1,7 @@
 import React from "react";
 import "../MoviesCard/MoviesCard.css";
 import noImage from "../../images/no-image.png";
+import { MOVIES_IMAGE_URL } from "../../utils/constant.js";
 
 function MoviesCard({
   card,
@@ -9,12 +10,29 @@ function MoviesCard({
   isSavedMovies,
   savedMovies,
 }) {
-  const MOVIES_IMAGE_URL = "https://api.nomoreparties.co";
   const [isCardLikeClicked, setIsCardLikeClicked] = React.useState(false);
-
   const cardLikeButtonClassName = `${
     isCardLikeClicked ? "moviesCard__button_saved" : "moviesCard__button"
   }`;
+
+  const setLikes = React.useCallback(() => {
+    const likesCard = savedMovies.find((movie) => movie.movieId === card.id);
+    if (likesCard) {
+      setIsCardLikeClicked(true);
+    } else {
+      setIsCardLikeClicked(false);
+    }
+  }, [card.id, savedMovies]);
+
+  React.useEffect(() => {
+    setLikes();
+  }, [setLikes]);
+
+  function durationConversion(mins) {
+    const hours = Math.trunc(mins / 60);
+    const minutes = mins % 60;
+    return hours > 0 ? `${hours}ч ${minutes}м` : `${minutes}м`;
+  }
 
   function handleLikeClick(evt) {
     evt.stopPropagation();
@@ -70,7 +88,9 @@ function MoviesCard({
           </div>
           <div className="moviesCard__movieInfo">
             <p className="moviesCard__movieName">{card.nameRU}</p>
-            <p className="moviesCard__movieDuration">{card.duration}</p>
+            <p className="moviesCard__movieDuration">
+              {durationConversion(card.duration)}
+            </p>
           </div>
         </>
       ) : (
@@ -82,20 +102,22 @@ function MoviesCard({
               onClick={handleLikeClick}
             />
             <a href={card.trailerLink} target="_blank" rel="noreferrer">
-            <img
-              src={`${
-                card.image !== null
-                  ? `${MOVIES_IMAGE_URL}${card.image.url}`
-                  : noImage
-              }`}
-              alt={card.nameRU}
-              className="moviesCard__image"
-            />
+              <img
+                src={`${
+                  card.image !== null
+                    ? `${MOVIES_IMAGE_URL}${card.image.url}`
+                    : noImage
+                }`}
+                alt={card.nameRU}
+                className="moviesCard__image"
+              />
             </a>
           </div>
           <div className="moviesCard__movieInfo">
             <p className="moviesCard__movieName">{card.nameRU}</p>
-            <p className="moviesCard__movieDuration">{card.duration}</p>
+            <p className="moviesCard__movieDuration">
+              {durationConversion(card.duration)}
+            </p>
           </div>
         </>
       )}

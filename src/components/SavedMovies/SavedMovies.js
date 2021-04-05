@@ -17,7 +17,9 @@ function SavedMovies({
   onChange,
   onSubmit,
   isSavedSearch,
-  showSavedSearchedMovies
+  showSavedSearchedMovies,
+  windowWidth,
+  savedMovies
 }) {
   return (
     <>
@@ -39,6 +41,8 @@ function SavedMovies({
           isSavedMovies={isSavedMovies}
           handleDeleteSavedMovie={handleDeleteSavedMovie}
           isSavedSearch={isSavedSearch}
+          windowWidth={windowWidth}
+          savedMovies={savedMovies}
         />
       </section>
       <Footer />

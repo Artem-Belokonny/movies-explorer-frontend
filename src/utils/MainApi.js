@@ -1,4 +1,5 @@
 import { handleOriginalResponse } from "../utils/utils.js";
+import { BASE_URL } from "../utils/constant.js"
 
 class MainApi {
   constructor({ baseUrl, headers }) {
@@ -90,7 +91,7 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  baseUrl: "https://api.volorel-diploma.students.nomoredomains.monster",
+  baseUrl: BASE_URL,
   headers: {
     "Accept": "application/json",
     "authorization": `Bearer ${localStorage.getItem("jwt")}`,

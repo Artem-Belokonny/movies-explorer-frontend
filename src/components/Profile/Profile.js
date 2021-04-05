@@ -1,10 +1,10 @@
 import React from "react";
-import "../Profile/Profile.css";
 import Header from "../Header/Header.js";
 import { withRouter } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
+import "../Profile/Profile.css";
 
-function Profile({ handleSignOut, onUpdateUser, loggedIn }) {
+function Profile({ onSignOut, onUpdateUser, loggedIn }) {
   const currentUser = React.useContext(CurrentUserContext);
   const [data, setData] = React.useState({
     name: "",
@@ -18,12 +18,12 @@ function Profile({ handleSignOut, onUpdateUser, loggedIn }) {
     isValid ? "profile__button" : "profile__button_disabled"
   }`;
 
-    React.useEffect(() => {
-      setData({
-        name: (currentUser.name || ''),
-        email: (currentUser.email || '')
-      })
-    }, [currentUser]);
+  React.useEffect(() => {
+    setData({
+      name: currentUser.name || "",
+      email: currentUser.email || "",
+    });
+  }, [currentUser]);
 
   const handleChange = (evt) => {
     const target = evt.target;
@@ -34,12 +34,12 @@ function Profile({ handleSignOut, onUpdateUser, loggedIn }) {
     setIsValid(target.closest("form").checkValidity());
   };
 
-    // Обработчик сабмита формы
-    function handleSubmit(evt) {
-      evt.preventDefault();
-      onUpdateUser(data);
-      setIsSuccess("Данные успешно изменены")
-    }
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    onUpdateUser(data);
+    setIsSuccess("Данные успешно изменены");
+    setIsValid(false);
+  }
 
   return (
     <>
@@ -70,6 +70,7 @@ function Profile({ handleSignOut, onUpdateUser, loggedIn }) {
               type="email"
               name="email"
               required
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               id="email"
               placeholder="Введите email"
               value={data.email}
@@ -79,10 +80,10 @@ function Profile({ handleSignOut, onUpdateUser, loggedIn }) {
           <p className="profile__error-text">{errors.email}</p>
           <p className="profile__error-text">{isSuccess}</p>
           <button form="edit" type="submit" className={profileButtonClassName}>
-              Редактировать
-            </button>
+            Редактировать
+          </button>
           <button
-            onClick={handleSignOut}
+            onClick={onSignOut}
             className="profile__button profile__button_signout"
           >
             Выйти из аккаунта

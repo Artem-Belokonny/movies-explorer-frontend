@@ -1,6 +1,6 @@
 import { handleOriginalResponse } from "../utils/utils.js";
+import { MOVIES_URL } from "../utils/constant.js"
 
-export const MOVIES_URL = "https://api.nomoreparties.co/beatfilm-movies";
 
 export const getInitialMovies = () => {
   return fetch(`${MOVIES_URL}`, {
