@@ -97,9 +97,8 @@ function App() {
     return mainApi
       .register(name, email, password)
       .then((res) => {
-        handleLogin({ email, password });
-        setCurrentUser(res);
-        console.log(res);
+          handleLogin({ email, password });
+          setCurrentUser(res);
       })
       .catch((err) => {
         alert(err);
@@ -116,7 +115,7 @@ function App() {
         if (res.token) {
           localStorage.setItem("jwt", res.token);
           mainApi.setToken(res.token);
-          setLoggedIn(true);
+          console.log(loggedIn)
           history.push("/movies");
         }
       })

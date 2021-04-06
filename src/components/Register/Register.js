@@ -31,12 +31,6 @@ function Register({ onRegister, loggedIn }) {
   function handleSubmit(evt) {
     evt.preventDefault();
     onRegister(data)
-      .then(() => history.push("/movies"))
-      .catch((err) => {
-        alert(err);
-        console.log(err);
-        history.push("/signup");
-      });
     setIsValid(false);
   }
 

@@ -21,12 +21,6 @@ function Login({ onLogin, loggedIn }) {
   function handleSubmit(evt) {
     evt.preventDefault();
     onLogin(data)
-      .then(() => history.push("/movies"))
-      .catch((err) => {
-        alert(err);
-        console.log(err);
-        history.push("/signin");
-      });
     setIsValid(false);
   }
 
