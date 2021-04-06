@@ -4,7 +4,18 @@ import MoviesCard from "../MoviesCard/MoviesCard.js";
 import Preloader from "../Preloader/Preloader.js";
 import { withRouter } from "react-router-dom";
 import { useWindowSize } from "../../utils/utils.js";
-import { MAX_WIDTH, MEDIUM_WIDTH, MIN_WIDTH } from "../../utils/constant";
+import {
+  MAX_WIDTH,
+  MEDIUM_WIDTH,
+  MIN_WIDTH,
+  MAX_WIDTH_INITIAL_CARDS,
+  MEDIUM_WIDTH_INITIAL_CARDS,
+  MIN_WIDTH_INITIAL_CARDS,
+  MAX_WIDTH_MORE_CARDS,
+  MEDIUM_WIDTH_MORE_CARDS,
+  MIN_WIDTH_MORE_CARDS,
+  SMALLEST_WIDTH_MORE_CARDS
+} from "../../utils/constant";
 
 function MoviesCardList({
   cards,
@@ -27,20 +38,20 @@ function MoviesCardList({
 
   React.useEffect(() => {
     if (windowWidth >= MAX_WIDTH) {
-      setInitialCards(12);
-      setMoreCards(4);
+      setInitialCards(MAX_WIDTH_INITIAL_CARDS);
+      setMoreCards(MAX_WIDTH_MORE_CARDS);
     }
     if (windowWidth < MAX_WIDTH && windowWidth >= MEDIUM_WIDTH) {
-      setInitialCards(12);
-      setMoreCards(3);
+      setInitialCards(MAX_WIDTH_INITIAL_CARDS);
+      setMoreCards(MEDIUM_WIDTH_MORE_CARDS);
     }
     if (windowWidth < MEDIUM_WIDTH && windowWidth >= MIN_WIDTH) {
-      setInitialCards(8);
-      setMoreCards(2);
+      setInitialCards(MEDIUM_WIDTH_INITIAL_CARDS);
+      setMoreCards(MIN_WIDTH_MORE_CARDS);
     }
     if (windowWidth < MIN_WIDTH) {
-      setInitialCards(5);
-      setMoreCards(1);
+      setInitialCards(MIN_WIDTH_INITIAL_CARDS);
+      setMoreCards(SMALLEST_WIDTH_MORE_CARDS);
     }
   }, [windowWidth]);
 

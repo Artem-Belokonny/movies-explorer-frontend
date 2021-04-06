@@ -35,6 +35,7 @@ function Register({ onRegister, loggedIn }) {
       .catch((err) => {
         alert(err);
         console.log(err);
+        history.push("/signup");
       });
     setIsValid(false);
   }

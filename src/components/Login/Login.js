@@ -25,6 +25,7 @@ function Login({ onLogin, loggedIn }) {
       .catch((err) => {
         alert(err);
         console.log(err);
+        history.push("/signin");
       });
     setIsValid(false);
   }
