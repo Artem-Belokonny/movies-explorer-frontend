@@ -99,6 +99,7 @@ function App() {
       .then((res) => {
           handleLogin({ email, password });
           setCurrentUser(res);
+          history.push("/movies");
       })
       .catch((err) => {
         alert(err);
@@ -116,8 +117,9 @@ function App() {
           localStorage.setItem("jwt", res.token);
           mainApi.setToken(res.token);
           console.log(loggedIn)
-          history.push("/movies");
+          setLoggedIn(true);
         }
+        history.push("/movies");
       })
       .catch((err) => {
         alert(err);
