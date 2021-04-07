@@ -1,12 +1,44 @@
 import React from "react";
 import Welcome from "../Welcome/Welcome.js";
-import { withRouter, Link } from "react-router-dom";
+import { useHistory, withRouter, Link } from "react-router-dom";
 import "../Register/Register.css";
 
-function Register() {
+function Register({ onRegister, loggedIn }) {
+  const history = useHistory();
+  const [data, setData] = React.useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = React.useState({});
+  const [isValid, setIsValid] = React.useState(false);
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      history.push("/");
+    }
+  }, [history, loggedIn]);
+
+  const handleChange = (evt) => {
+    const target = evt.target;
+    const name = target.name;
+    const value = target.value;
+    setData({ ...data, [name]: value });
+    setErrors({ ...errors, [name]: target.validationMessage });
+    setIsValid(target.closest("form").checkValidity());
+  };
+
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    onRegister(data)
+    setIsValid(false);
+  }
+
   return (
     <>
       <Welcome
+        onSubmit={handleSubmit}
+        isValid={isValid}
         name="register"
         title="Добро пожаловать!"
         textBtn="Зарегистрироваться"
@@ -20,9 +52,12 @@ function Register() {
               required
               placeholder="Имя"
               id="name"
-              minlength="2" 
-              maxlength="30"
+              minLength="2"
+              maxLength="30"
+              value={data.name}
+              onChange={handleChange}
             />
+            <p className="register__error-text">{errors.name}</p>
             <p className="register__subtext">E-mail</p>
             <input
               className="welcome__input"
@@ -31,7 +66,10 @@ function Register() {
               required
               placeholder="Email"
               id="email"
+              value={data.email}
+              onChange={handleChange}
             />
+            <p className="register__error-text">{errors.email}</p>
             <p className="register__subtext">Пароль</p>
             <input
               className="welcome__input"
@@ -40,9 +78,12 @@ function Register() {
               required
               placeholder="Пароль"
               id="password"
-              minlength="2" 
-              maxlength="20"
+              minLength="2"
+              maxLength="20"
+              value={data.password}
+              onChange={handleChange}
             />
+            <p className="register__error-text">{errors.password}</p>
           </>
         }
         childrenSubtitle={

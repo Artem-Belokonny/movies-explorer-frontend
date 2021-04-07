@@ -6,20 +6,22 @@ import Techs from "../Techs/Techs.js";
 import AboutMe from "../AboutMe/AboutMe.js";
 import Portfolio from "../Portfolio/Portfolio.js";
 import Footer from "../Footer/Footer.js";
+import Header from "../Header/Header.js";
 import { withRouter } from "react-router-dom";
 
-function Main() {
+function Main({ loggedIn }) {
   return (
-  <>
-    <Promo />
-    <NavTab />
-    <AboutProject />
-    <Techs />
-    <AboutMe />
-    <Portfolio />
-		<Footer />
-  </>
-	);
+    <>
+      <Header loggedIn={loggedIn}/>
+      <Promo  />
+      <NavTab />
+      <AboutProject />
+      <Techs />
+      <AboutMe />
+      <Portfolio />
+      <Footer />
+    </>
+  );
 }
 
 export default withRouter(Main);

@@ -118,28 +118,6 @@
 	line-height: 18px;
 }
 
-.movies__moreButton {
-    min-width: 320px;
-    min-height: 36px;
-    color: #fff;
-    font-style: normal; 
-	font-weight: 500; 
-	font-size: 12px; 
-	line-height: 14px;
-    background-color: #2F2F2F;
-    border: none;
-    border-radius: 6px;
-    margin: 78px auto 80px;
-    opacity: 1; 
-    transition: opacity 2s;
-    padding: 0;
-}
-
-.movies__moreButton:hover {
-    opacity: .6; 
-    cursor: pointer;
-}
-
 @media only screen and (max-width: 1279px) {
     .movies {
         padding: 0 30px;
@@ -148,10 +126,6 @@
     .movies__input {
         font-size: 14px; 
         line-height: 18px;
-    }
-
-    .movies__moreButton {
-        margin: 60px auto 90px;
     }
 }
 
@@ -162,10 +136,5 @@
 
     .movies__input {
         font-size: 12px; 
-    }
-
-    .movies__moreButton {
-        min-width: 240px;
-        margin: 50px auto 80px;
     }
 }

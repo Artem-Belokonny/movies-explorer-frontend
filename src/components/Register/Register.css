@@ -7,3 +7,12 @@
     margin: 0;
     padding: 0;
 }
+
+.register__error-text {
+    color: #EE3465;
+    font-weight: 400; 
+    font-size: 10px; 
+    line-height: 12px;
+    margin: 0;
+    padding: 0;
+}

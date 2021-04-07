@@ -20,7 +20,7 @@
 }
 
 .welcome__form {
-    width: 100%;
+    width: 396px;
 }
 
 .welcome__title {
@@ -108,6 +108,25 @@
     padding: 0;
 }
 
+.welcome__button_disabled {
+    width: 100%;
+    min-height: 45px;
+    font-style: normal; 
+    font-weight: 500; 
+    font-size: 14px; 
+    line-height: 17px; 
+    text-align: center; 
+    color: #fff; 
+    background-color: #2F2F2F; 
+    border: none; 
+    border-radius: 3px; 
+    opacity: 1; 
+    transition: opacity 2s;
+    margin: 160px 0 16px 0;
+    padding: 0;
+    pointer-events: none; 
+} 
+
 .welcome__button:hover { 
     opacity: .6; 
     cursor: pointer; 
@@ -116,6 +135,10 @@
 @media only screen and (max-width: 767px) {
     .welcome__container {
         min-width: 260px;;
+    }
+
+    .welcome__form {
+        width: 260px;
     }
 
     .welcome__button {
